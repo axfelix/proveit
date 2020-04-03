@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>MoveIt</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script type="text/javascript">
+    let shell = require('electron').remote.shell
+    document.addEventListener('click', function (event) {
+      if (event.target.tagName === 'A' && event.target.href.startsWith('http')) {
+        event.preventDefault()
+        shell.openExternal(event.target.href)
+      }
+    })
+  </script>
+  <style>
+    @import "compass/css3";
+
+    .table-editable {
+      position: relative;
+      
+      .glyphicon {
+        font-size: 20px;
+      }
+    }
+
+    .table-remove {
+      color: #700;
+      cursor: pointer;
+      
+      &:hover {
+        color: #f00;
+      }
+    }
+
+    .table-up, .table-down {
+      color: #007;
+      cursor: pointer;
+      
+      &:hover {
+        color: #00f;
+      }
+    }
+
+    .table-add {
+      color: #070;
+      cursor: pointer;
+      position: absolute;
+      top: 8px;
+      right: 0;
+      
+      &:hover {
+        color: #0b0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container" class="container-fluid">
+
+   <ul>
+      <li>An editable table that exports a hash array. Dynamically compiles rows from headers</li> 
+      <li>Simple / powerful features such as add row, remove row, move row up/down.</li>
+   </ul>
+  
+    <div id="table" class="table-editable">
+      <span class="table-add glyphicon glyphicon-plus"></span>
+      <table class="table">
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th></th>
+          <th></th>
+        </tr>
+        <tr>
+          <td contenteditable="true">Stir Fry</td>
+          <td contenteditable="true">stir-fry</td>
+          <td>
+            <span class="table-remove glyphicon glyphicon-remove"></span>
+          </td>
+          <td>
+            <span class="table-up glyphicon glyphicon-arrow-up"></span>
+            <span class="table-down glyphicon glyphicon-arrow-down"></span>
+          </td>
+        </tr>
+        <!-- This is our clonable table line -->
+        <tr class="hide">
+          <td contenteditable="true">Untitled</td>
+          <td contenteditable="true">undefined</td>
+          <td>
+            <span class="table-remove glyphicon glyphicon-remove"></span>
+          </td>
+          <td>
+            <span class="table-up glyphicon glyphicon-arrow-up"></span>
+            <span class="table-down glyphicon glyphicon-arrow-down"></span>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <br/><br/>
+
+    <div class="button">
+      <button class="btn btn-primary" id="package">Create Transfer Package</button>
+    </div>
+
+    <br/><br/>
+
+  </div>
+  <script src="dragBag.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    for (i = new Date().getFullYear(); i > 1969; i--)
+    {
+        $('#datefrom').append($('<option />').val(i).html(i));
+        $('#dateto').append($('<option />').val(i).html(i));
+    }
+  </script>
+</body>
+
+</html>
