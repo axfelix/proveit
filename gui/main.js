@@ -10,9 +10,9 @@ const portfinder = require("portfinder");
 const fs = require('fs');
 
 const path = require('path')
-const PY_MOVEIT_FOLDER = 'moveit'
+const PY_DRAGBAG_FOLDER = 'dragbag'
 const PY_FOLDER = '..'
-const PY_MODULE = 'moveit'
+const PY_MODULE = 'dragbag'
 
 let pythonChild = null
 let mainWindow = null
@@ -20,7 +20,7 @@ let mainWindow = null
 const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 const guessPackaged = () => {
-  const fullPath = path.join(__dirname, PY_MOVEIT_FOLDER)
+  const fullPath = path.join(__dirname, PY_DRAGBAG_FOLDER)
   return require('fs').existsSync(fullPath)
 }
 
@@ -29,9 +29,9 @@ const getScriptPath = () => {
     return path.join(__dirname, PY_FOLDER, PY_MODULE + '.py')
   }
   if (process.platform === 'win32') {
-    return path.join(__dirname, PY_MOVEIT_FOLDER, PY_MODULE + '.exe')
+    return path.join(__dirname, PY_DRAGBAG_FOLDER, PY_MODULE + '.exe')
   }
-  return path.join(__dirname, PY_MOVEIT_FOLDER, PY_MODULE)
+  return path.join(__dirname, PY_DRAGBAG_FOLDER, PY_MODULE)
 }
 
 const createWindow = () => {
@@ -67,7 +67,7 @@ app.on('ready', () => {
 portfinder.basePort = 4242;
 let port = portfinder.getPort(function (err, port) {
   client.connect("tcp://127.0.0.1:" + String(port));
-  const createMoveIt = () => {
+  const createDragBag = () => {
     let script = getScriptPath()
     if (guessPackaged()) {
       pythonChild = require('child_process').spawn(script, [port])
@@ -88,10 +88,10 @@ let port = portfinder.getPort(function (err, port) {
     }
   }
 
-  app.on('ready', createMoveIt);
+  app.on('ready', createDragBag);
 });
 
-const exitMoveIt = () => {
+const exitDragBag = () => {
   pythonChild.kill()
   pythonChild = null
 }
@@ -104,7 +104,7 @@ app.on("before-quit", ev => {
 });
 
 app.on('will-quit', ev => {
-  exitMoveIt();
+  exitDragBag();
   app.quit();
 })
 

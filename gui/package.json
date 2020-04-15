@@ -1,13 +1,13 @@
 {
-  "name": "sfu-moveit",
-  "version": "2.0.1",
-  "homepage": "https://github.com/axfelix/moveit",
+  "name": "dragbag",
+  "version": "0.0.1",
+  "homepage": "https://github.com/axfelix/dragbag",
   "main": "main.js",
-  "description": "An app for producing packages for deposit to the Archives",
+  "description": "An app for validating and adding metadata fields to bags.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/axfelix/moveit"
+    "url": "https://github.com/axfelix/dragbag"
   },
   "scripts": {
     "start": "electron .",
@@ -23,7 +23,7 @@
     "zerorpc": "^0.9.8"
   },
   "files": [
-    "moveit/*"
+    "dragbag/*"
   ],
   "author": "Simon Fraser University Archives <archives@sfu.ca> (http://www.sfu.ca/archives.html)"
 }
