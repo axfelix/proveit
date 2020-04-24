@@ -2,12 +2,22 @@ const notifier = require("node-notifier");
 const tt = require('electron-tooltip');
 const path = require('path');
 const fs = require('fs');
+const dropzone = require('dropzone');
 const {dialog} = require('electron').remote;
 const {app} = require('electron').remote;
 const remote = require('electron').remote;
 let client = remote.getGlobal('client');
 let packageFolder = null;
 tt({position: 'right'})
+
+
+dropzone.options.bagDropzone = {
+  init: function() { this.on("addedfile", bagLoad(file)); },
+  dictDefaultMessage: "Drag a Bag from your computer here, or click to browse for one.",
+  dictInvalidFileType: "Provide Bags in zip or 7z format.",
+  maxFiles: 1,
+  acceptedFiles: "application/zip,.7z",
+};
 
 var $TABLE = $('#table');
 var $BTN = $('#export-btn');
@@ -64,14 +74,10 @@ $BTN.click(function () {
   $EXPORT.text(JSON.stringify(data));
 });
 
-function bag_load() {
-  // TODO: open directory browser only if package not dragged onto app
-  packageFolder = dialog.showOpenDialog({properties: ["openDirectory"]});
-  if (packageFolder){
-    client.invoke("bag_load", JSON.stringify(packageFolder[0]), function(error, res, more) {
-        notifier.notify({"title" : "DragBag", "message" : "You clicked something!"});
-    });
-  }
+function bagLoad(bag) {
+  //client.invoke("bag_load", JSON.stringify(packageFolder[0]), function(error, res, more) {
+  notifier.notify({"title" : "DragBag", "message" : "That's a bag!"});
+  //});
 }
 
 document.getElementById("package").addEventListener("click", package);
