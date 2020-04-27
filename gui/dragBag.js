@@ -12,12 +12,16 @@ tt({position: 'right'})
 
 
 dropzone.options.bagDropzone = {
-  //init: function() { this.on("addedfile", bagLoad(file)); },
   dictDefaultMessage: "Drag a Bag from your computer here, or click to browse for one.",
   dictInvalidFileType: "Provide Bags in zip or 7z format.",
   maxFiles: 1,
-  acceptedFiles: "application/zip,.7z",
-  //method: function bagLoad(files) { return files; }
+  acceptedFiles: ".zip,.7z",
+  autoQueue: false,
+  init: function() {
+    this.on('addedfile', function (file) {
+      bagLoad(file);
+    });
+  }
 };
 
 var $TABLE = $('#table');
@@ -65,11 +69,36 @@ $BTN.click(function () {
 });
 
 function bagLoad(bag) {
-  //client.invoke("bag_load", JSON.stringify(packageFolder[0]), function(error, res, more) {
   notifier.notify({"title" : "DragBag", "message" : "That's a bag!"});
-  //});
   document.getElementById("plus").style.display = 'inline';
   document.getElementById("package").style.display = 'inline';
+  client.invoke("bag_load", bag.path, function(error, res, more) {
+    if (res){
+      console.log(res);
+      var element = document.getElementById('properties');
+      for (let x in res[1]) {
+        // There's probably a nicer way of templating this
+        var row = document.createElement('tr');
+        var key = document.createElement('td');
+        key.setAttribute("contenteditable", "true");
+        var keyvalue = document.createTextNode(x);
+        row.appendChild(key);
+        key.appendChild(keyvalue);
+        var value = document.createElement('td');
+        value.setAttribute("contenteditable", "true");
+        // This feels way too Pythonic, and bad here
+        var valuevalue = document.createTextNode(res[1][x]);
+        row.appendChild(value);
+        value.appendChild(valuevalue);
+        var remove = document.createElement('td');
+        var removespan = document.createElement('span');
+        removespan.setAttribute("class", "table-remove glyphicon glyphicon-remove");
+        row.appendChild(remove);
+        remove.appendChild(removespan);
+        element.appendChild(row);
+      }
+    }
+  });
 }
 
 document.getElementById("package").addEventListener("click", package);

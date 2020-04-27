@@ -75,19 +75,23 @@
     <div id="table" class="table-editable">
       <span class="table-add glyphicon glyphicon-plus" style="display:none;" id="plus"></span>
       <table class="table">
-        <tr>
-          <th>Name</th>
-          <th>Value</th>
-          <th></th>
-        </tr>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Value</th>
+            <th></th>
+          </tr>
+        </thead>
         <!-- This is our clonable table line -->
-        <tr class="hide">
-          <td contenteditable="true">Untitled</td>
-          <td contenteditable="true">undefined</td>
-          <td>
-            <span class="table-remove glyphicon glyphicon-remove"></span>
-          </td>
-        </tr>
+        <tbody id="properties">
+          <tr class="hide">
+            <td contenteditable="true">Untitled</td>
+            <td contenteditable="true">undefined</td>
+            <td>
+              <span class="table-remove glyphicon glyphicon-remove"></span>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
@@ -101,13 +105,6 @@
 
   </div>
   <script src="dragBag.js" charset="utf-8"></script>
-  <script type="text/javascript">
-    for (i = new Date().getFullYear(); i > 1969; i--)
-    {
-        $('#datefrom').append($('<option />').val(i).html(i));
-        $('#dateto').append($('<option />').val(i).html(i));
-    }
-  </script>
 </body>
 
 </html>

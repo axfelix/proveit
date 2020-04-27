@@ -14,7 +14,10 @@ class DragBag(object):
     def bag_load(self, bag_path):
         tempdir = tempfile.TemporaryDirectory()
         ZipFile(bag_path).extractall(path=tempdir.name)
-        bag = bagit.Bag(path=tempdir.name)
+        try:
+            bag = bagit.Bag(path=tempdir.name)
+        except:
+            return False, False
 
         if bag.is_valid():
             bag_files = []
