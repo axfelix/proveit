@@ -97,6 +97,7 @@ const exitDragBag = () => {
 }
 
 app.on("before-quit", ev => {
+  client.invoke("teardown", function(error, res, more) {});
   if (mainWindow != null){
     mainWindow.close();
   }

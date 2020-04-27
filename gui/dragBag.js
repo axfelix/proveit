@@ -12,11 +12,12 @@ tt({position: 'right'})
 
 
 dropzone.options.bagDropzone = {
-  init: function() { this.on("addedfile", bagLoad(file)); },
+  //init: function() { this.on("addedfile", bagLoad(file)); },
   dictDefaultMessage: "Drag a Bag from your computer here, or click to browse for one.",
   dictInvalidFileType: "Provide Bags in zip or 7z format.",
   maxFiles: 1,
   acceptedFiles: "application/zip,.7z",
+  //method: function bagLoad(files) { return files; }
 };
 
 var $TABLE = $('#table');
@@ -30,17 +31,6 @@ $('.table-add').click(function () {
 
 $('.table-remove').click(function () {
   $(this).parents('tr').detach();
-});
-
-$('.table-up').click(function () {
-  var $row = $(this).parents('tr');
-  if ($row.index() === 1) return; // Don't go above the header
-  $row.prev().before($row.get(0));
-});
-
-$('.table-down').click(function () {
-  var $row = $(this).parents('tr');
-  $row.next().after($row.get(0));
 });
 
 // A few jQuery helpers for exporting only
@@ -78,6 +68,8 @@ function bagLoad(bag) {
   //client.invoke("bag_load", JSON.stringify(packageFolder[0]), function(error, res, more) {
   notifier.notify({"title" : "DragBag", "message" : "That's a bag!"});
   //});
+  document.getElementById("plus").style.display = 'inline';
+  document.getElementById("package").style.display = 'inline';
 }
 
 document.getElementById("package").addEventListener("click", package);
