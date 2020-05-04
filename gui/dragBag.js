@@ -74,7 +74,6 @@ function bagLoad(bag) {
   document.getElementById("package").style.display = 'inline';
   client.invoke("bag_load", bag.path, function(error, res, more) {
     if (res){
-      console.log(res);
       var element = document.getElementById('properties');
       for (let x in res[1]) {
         // There's probably a nicer way of templating this
@@ -96,6 +95,9 @@ function bagLoad(bag) {
         row.appendChild(remove);
         remove.appendChild(removespan);
         element.appendChild(row);
+      $('.table-remove').click(function () {
+        $(this).parents('tr').detach();
+      });
       }
     }
   });
