@@ -10,6 +10,7 @@ let client = remote.getGlobal('client');
 let packageFolder = null;
 tt({position: 'right'})
 
+let bagpath = null;
 
 dropzone.options.bagDropzone = {
   dictDefaultMessage: "Drag a Bag from your computer here, or click to browse for one.",
@@ -72,6 +73,7 @@ function bagLoad(bag) {
   notifier.notify({"title" : "DragBag", "message" : "That's a bag!"});
   document.getElementById("plus").style.display = 'inline';
   document.getElementById("package").style.display = 'inline';
+  bagpath = bag.path;
   client.invoke("bag_load", bag.path, function(error, res, more) {
     if (res){
       var element = document.getElementById('properties');
@@ -102,5 +104,18 @@ function bagLoad(bag) {
     }
   });
 }
+
+function package() {
+  var rows = [];
+  $('tbody').eq(0).find('tr').each((r,row) => rows.push($(row).find('td').map((c,cell) => $(cell).text()).toArray()))
+  client.invoke("bag_update", rows, bagpath, function(error, res, more) {
+    if (res === true){
+      notifier.notify({"title" : "MoveIt", "message" : "The bag has been updated on your desktop."});
+    } else {
+      notifier.notify({"title" : "MoveIt", "message" : "Error updating bag."});
+    }
+  });
+}
+
 
 document.getElementById("package").addEventListener("click", package);

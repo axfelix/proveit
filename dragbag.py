@@ -5,6 +5,8 @@ from time import strftime
 from zipfile import ZipFile
 import tempfile
 import zerorpc
+import shutil
+from pathlib import Path
 
 bag_path = None
 bag = None
@@ -12,6 +14,8 @@ tempdir = None
 
 class DragBag(object):
     def bag_load(self, bag_path):
+        global bag
+        global tempdir
         tempdir = tempfile.TemporaryDirectory()
         ZipFile(bag_path).extractall(path=tempdir.name)
         try:
@@ -26,13 +30,15 @@ class DragBag(object):
         else:
             return False, False
 
-    def bag_update(self, new_metadata):
-        for x, y in new_metadata:
-            bag.info[x] = y
+    def bag_update(self, new_metadata, bag_path):
+        for x, y, z in new_metadata:
+            if x != "Untitled":
+                bag.info[x] = y
         bag.save(manifests=True)
         desktopPath = os.path.expanduser("~/Desktop/")
-        bag_destination = os.path.join(desktopPath, os.path.basename(bag_path))
-        zipname = shutil.make_archive(bag_destination, 'zip', bag_path)
+        bag_destination = os.path.join(desktopPath, Path(bag_path).stem)
+        zipname = shutil.make_archive(bag_destination, 'zip', tempdir.name)
+        return True
 
     def teardown(self):
         tempdir.cleanup()
