@@ -16,14 +16,39 @@ dropzone.options.bagDropzone = {
   dictDefaultMessage: "Drag a Bag from your computer here, or click to browse for one.",
   dictInvalidFileType: "Provide Bags in zip or 7z format.",
   maxFiles: 1,
-  acceptedFiles: ".zip,.7z",
+  acceptedFiles: ".zip,.7z"
+  /*
   autoQueue: false,
   init: function() {
     this.on('addedfile', function (file) {
       bagLoad(file);
     });
   }
+  */
 };
+
+bagDropzone.dropzone._uploadData = function(files) {
+  console.log(files[0]);
+  bagLoad(files[0]);
+  let allFinished = true;
+  this._finished(files, '', null);
+}
+
+bagDropzone.dropzone.accept = function(file, done) {
+  if (this.options.maxFilesize && file.size > (this.options.maxFilesize * 1024 * 1024)) {
+    done(this.options.dictFileTooBig.replace("{{filesize}}", Math.round(file.size / 1024 / 10.24) / 100).replace("{{maxFilesize}}", this.options.maxFilesize));
+  } else if (!dropzone.isValidFile(file, this.options.acceptedFiles)) {
+    done(this.options.dictInvalidFileType);
+  } else if ((this.options.maxFiles != null) && (this.getAcceptedFiles().length >= this.options.maxFiles)) {
+    bagDropzone.dropzone.removeAllFiles();
+    // TODO: clean up table in this case, and process second file.
+    this.options.accept.call(this, file, done);
+  } else {
+    this.options.accept.call(this, file, done);
+  }
+}
+
+
 
 var $TABLE = $('#table');
 var $BTN = $('#export-btn');
