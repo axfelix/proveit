@@ -16,39 +16,12 @@ dropzone.options.bagDropzone = {
   dictDefaultMessage: "Drag a Bag from your computer here, or click to browse for one.",
   dictInvalidFileType: "Provide Bags in zip or 7z format.",
   maxFiles: 1,
-  acceptedFiles: ".zip,.7z"
-  /*
-  autoQueue: false,
-  init: function() {
-    this.on('addedfile', function (file) {
-      bagLoad(file);
-    });
-  }
-  */
-};
-
-bagDropzone.dropzone._uploadData = function(files) {
-  console.log(files[0]);
-  bagLoad(files[0]);
-  let allFinished = true;
-  this._finished(files, '', null);
-}
-
-bagDropzone.dropzone.accept = function(file, done) {
-  if (this.options.maxFilesize && file.size > (this.options.maxFilesize * 1024 * 1024)) {
-    done(this.options.dictFileTooBig.replace("{{filesize}}", Math.round(file.size / 1024 / 10.24) / 100).replace("{{maxFilesize}}", this.options.maxFilesize));
-  } else if (!dropzone.isValidFile(file, this.options.acceptedFiles)) {
-    done(this.options.dictInvalidFileType);
-  } else if ((this.options.maxFiles != null) && (this.getAcceptedFiles().length >= this.options.maxFiles)) {
-    bagDropzone.dropzone.removeAllFiles();
-    // TODO: clean up table in this case, and process second file.
-    this.options.accept.call(this, file, done);
-  } else {
-    this.options.accept.call(this, file, done);
+  acceptedFiles: ".zip,.7z",
+  addedfile: function(file) {
+    bagLoad(file);
+    let allFinished = true;
   }
 }
-
-
 
 var $TABLE = $('#table');
 var $BTN = $('#export-btn');
@@ -95,13 +68,25 @@ $BTN.click(function () {
 });
 
 function bagLoad(bag) {
-  notifier.notify({"title" : "DragBag", "message" : "That's a bag!"});
   document.getElementById("plus").style.display = 'inline';
   document.getElementById("package").style.display = 'inline';
   bagpath = bag.path;
   client.invoke("bag_load", bag.path, function(error, res, more) {
-    if (res){
+    if (res[0]){
+      notifier.notify({"title" : "DragBag", "message" : "Bag and all checksums are valid."});
       var element = document.getElementById('properties');
+      element.innerHTML = '<tr class="hide"><td contenteditable="true">Untitled</td><td contenteditable="true">undefined</td><td><span class="table-remove glyphicon glyphicon-remove"></span></td></tr>';
+      var bagDropzone = document.getElementById("bagDropzone");
+      var existingBagname = document.getElementById("existingBagname");
+      if (existingBagname) {
+        bagDropzone.removeChild(existingBagname);
+      }
+      var bagname = document.createElement('p');
+      var currentBagname = document.createTextNode(bag.name);
+      bagname.appendChild(currentBagname);
+      bagname.setAttribute("class", "dz-message");
+      bagname.setAttribute("id", "existingBagname");
+      bagDropzone.appendChild(bagname);
       for (let x in res[1]) {
         // There's probably a nicer way of templating this
         var row = document.createElement('tr');
@@ -126,6 +111,14 @@ function bagLoad(bag) {
         $(this).parents('tr').detach();
       });
       }
+    } else {
+      notifier.notify({"title" : "DragBag", "message" : "Not a valid bag."});
+      if (res[1]){
+        // Do something with the list of invalid files
+        console.log(res[1]);
+      } else {
+        bagDropzone.dropzone.removeAllFiles();
+      }
     }
   });
 }
@@ -141,6 +134,5 @@ function package() {
     }
   });
 }
-
 
 document.getElementById("package").addEventListener("click", package);

@@ -28,7 +28,14 @@ class DragBag(object):
             for x in bag.payload_files(): bag_files.append(x)
             return bag_files, bag.info
         else:
-            return False, False
+            bad_files = []
+            try:
+                bag.validate()
+            except bagit.BagValidationError as e:
+                for d in e.details:
+                    if isinstance(d, bagit.ChecksumMismatch):
+                        bad_files.append(d.path)
+            return False, bad_files
 
     def bag_update(self, new_metadata, bag_path):
         for x, y, z in new_metadata:
@@ -47,3 +54,4 @@ if __name__ == '__main__':
     s = zerorpc.Server(DragBag())
     s.bind('tcp://127.0.0.1:' + str(sys.argv[1]))
     s.run()
+    
