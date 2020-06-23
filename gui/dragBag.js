@@ -124,15 +124,19 @@ function bagLoad(bag) {
 }
 
 function package() {
-  var rows = [];
-  $('tbody').eq(0).find('tr').each((r,row) => rows.push($(row).find('td').map((c,cell) => $(cell).text()).toArray()))
-  client.invoke("bag_update", rows, bagpath, function(error, res, more) {
-    if (res === true){
-      notifier.notify({"title" : "MoveIt", "message" : "The bag has been updated on your desktop."});
-    } else {
-      notifier.notify({"title" : "MoveIt", "message" : "Error updating bag."});
-    }
-  });
+  exportPath = dialog.showOpenDialog({properties: ["openDirectory"]});
+  if (exportPath){
+    var rows = [];
+    $('tbody').eq(0).find('tr').each((r,row) => rows.push($(row).find('td').map((c,cell) => $(cell).text()).toArray()));
+    client.invoke("bag_update", rows, bagpath, JSON.stringify(exportPath[0]), function(error, res, more) {
+      if (res === true){
+        notifier.notify({"title" : "MoveIt", "message" : "The bag has been updated on your desktop."});
+      } else {
+        notifier.notify({"title" : "MoveIt", "message" : "Error updating bag."});
+      }
+    });
+  }
+
 }
 
 document.getElementById("package").addEventListener("click", package);

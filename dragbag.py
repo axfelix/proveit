@@ -37,13 +37,12 @@ class DragBag(object):
                         bad_files.append(d.path)
             return False, bad_files
 
-    def bag_update(self, new_metadata, bag_path):
+    def bag_update(self, new_metadata, bag_path, export_path):
         for x, y, z in new_metadata:
             if x != "Untitled":
                 bag.info[x] = y
         bag.save(manifests=True)
-        desktopPath = os.path.expanduser("~/Desktop/")
-        bag_destination = os.path.join(desktopPath, Path(bag_path).stem)
+        bag_destination = os.path.join(export_path, Path(bag_path).stem)
         zipname = shutil.make_archive(bag_destination, 'zip', tempdir.name)
         return True
 
