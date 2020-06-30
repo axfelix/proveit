@@ -1,4 +1,7 @@
 # ProveIt
+
+![ProveIt](proveit.png)
+
 This is intended to eventually replace https://github.com/LibraryOfCongress/bagger, which has been called "effectively deprecated" (and who wants to use desktop Java at this point anyway). The main purpose is to be able to load and validate a bag, and edit some properties in a nice GUI, possibly according to a template. Screenshots forthcoming when it's closer to feature-complete.
 
 ## Development
