@@ -73,7 +73,7 @@ function bagLoad(bag) {
   bagpath = bag.path;
   client.invoke("bag_load", bag.path, function(error, res, more) {
     if (res[0]){
-      notifier.notify({"title" : "DragBag", "message" : "Bag and all checksums are valid."});
+      notifier.notify({"title" : "ProveIt", "message" : "Bag and all checksums are valid."});
       var element = document.getElementById('properties');
       element.innerHTML = '<tr class="hide"><td contenteditable="true">Untitled</td><td contenteditable="true">undefined</td><td><span class="table-remove glyphicon glyphicon-remove"></span></td></tr>';
       var bagDropzone = document.getElementById("bagDropzone");
@@ -112,7 +112,7 @@ function bagLoad(bag) {
       });
       }
     } else {
-      notifier.notify({"title" : "DragBag", "message" : "Not a valid bag."});
+      notifier.notify({"title" : "ProveIt", "message" : "Not a valid bag."});
       if (res[1]){
         // Do something with the list of invalid files
         console.log(res[1]);
@@ -130,9 +130,9 @@ function package() {
     $('tbody').eq(0).find('tr').each((r,row) => rows.push($(row).find('td').map((c,cell) => $(cell).text()).toArray()));
     client.invoke("bag_update", rows, bagpath, JSON.stringify(exportPath[0]), function(error, res, more) {
       if (res === true){
-        notifier.notify({"title" : "MoveIt", "message" : "The bag has been updated on your desktop."});
+        notifier.notify({"title" : "ProveIt", "message" : "The bag has been updated on your desktop."});
       } else {
-        notifier.notify({"title" : "MoveIt", "message" : "Error updating bag."});
+        notifier.notify({"title" : "ProveIt", "message" : "Error updating bag."});
       }
     });
   }

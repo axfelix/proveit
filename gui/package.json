@@ -1,13 +1,13 @@
 {
-  "name": "dragbag",
+  "name": "ProveIt",
   "version": "0.0.1",
-  "homepage": "https://github.com/axfelix/dragbag",
+  "homepage": "https://github.com/axfelix/proveit",
   "main": "main.js",
   "description": "An app for validating and adding metadata fields to bags.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/axfelix/dragbag"
+    "url": "https://github.com/axfelix/proveit"
   },
   "scripts": {
     "start": "electron .",
@@ -24,7 +24,7 @@
     "dropzone": "^5.7.0"
   },
   "files": [
-    "dragbag/*"
+    "proveit/*"
   ],
   "author": "Simon Fraser University Archives <archives@sfu.ca> (http://www.sfu.ca/archives.html)"
 }

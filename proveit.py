@@ -12,7 +12,7 @@ bag_path = None
 bag = None
 tempdir = None
 
-class DragBag(object):
+class ProveIt(object):
     def bag_load(self, bag_path):
         global bag
         global tempdir
@@ -50,7 +50,7 @@ class DragBag(object):
         tempdir.cleanup()
 
 if __name__ == '__main__':
-    s = zerorpc.Server(DragBag())
+    s = zerorpc.Server(ProveIt())
     s.bind('tcp://127.0.0.1:' + str(sys.argv[1]))
     s.run()
     
