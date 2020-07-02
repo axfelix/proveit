@@ -56,13 +56,23 @@
         color: #0b0;
       }
     }
+
+    #block_container
+    {
+        text-align:center;
+        display:inline;
+    }
+    #block_version
+    {
+        display:inline;
+    }
   </style>
 </head>
 
 <body>
   <div id="container" class="container-fluid">
 
-    <h3>ProveIt</h3>
+    <div id="block_container"><h3>ProveIt <div id="block_version" class="version"></div></h3></div>
 
     <form action="/file-upload"
       class="dropzone"
@@ -70,7 +80,8 @@
     </form>
 
     <br/>
-    <br/>
+    
+    <div id="validation" class="validation"></div>
   
     <div id="table" class="table-editable">
       <span class="table-add glyphicon glyphicon-plus" style="display:none;" id="plus"></span>
@@ -86,16 +97,20 @@
       </table>
     </div>
 
-    <br/><br/>
+    <br/>
 
     <div class="button">
       <button class="btn btn-primary" id="package" style="display:none;">Export Updated Bag</button>
     </div>
 
-    <br/><br/>
+    <br/>
 
   </div>
   <script src="proveit.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var appVersion = require('electron').remote.app.getVersion();
+    $('div.version').text(appVersion);
+  </script>
 </body>
 
 </html>
