@@ -74,6 +74,7 @@ function bagLoad(bag) {
   client.invoke("bag_load", bag.path, function(error, res, more) {
     if (res[0]){
       notifier.notify({"title" : "ProveIt", "message" : "Bag and all checksums are valid."});
+      document.getElementById('validation').innerHTML = "Bag and all checksums are <b>valid</b>.";
       var element = document.getElementById('properties');
       element.innerHTML = '<tr class="hide"><td contenteditable="true">Untitled</td><td contenteditable="true">undefined</td><td><span class="table-remove glyphicon glyphicon-remove"></span></td></tr>';
       var bagDropzone = document.getElementById("bagDropzone");
@@ -112,10 +113,9 @@ function bagLoad(bag) {
       });
       }
     } else {
-      notifier.notify({"title" : "ProveIt", "message" : "Not a valid bag."});
+      notifier.notify({"title" : "ProveIt", "message" : "Bag has failed validation."});
       if (res[1]){
-        // Do something with the list of invalid files
-        console.log(res[1]);
+        document.getElementById('validation').innerHTML = "Some files <b>failed</b> to validate: ".concat(res[1].join(', '));
       } else {
         bagDropzone.dropzone.removeAllFiles();
       }
