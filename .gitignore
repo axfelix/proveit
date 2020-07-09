@@ -2,3 +2,9 @@
 gui/node_modules
 gui/package-lock.json
 gui/install
+__pycache__/
+build/
+gui/ProveIt-*
+gui/ProveIt-darwin-x64/
+gui/proveit/
+proveit.spec

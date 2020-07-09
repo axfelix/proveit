@@ -74,7 +74,11 @@ function bagLoad(bag) {
   client.invoke("bag_load", bag.path, function(error, res, more) {
     if (res[0]){
       notifier.notify({"title" : "ProveIt", "message" : "Bag and all checksums are valid."});
-      document.getElementById('validation').innerHTML = "Bag and all checksums are <b>valid</b>.";
+      if (res[1]){
+        document.getElementById('validation').innerHTML = "Bag and all checksums are <b>valid</b>. However, some files in the bag may be password protected: ".concat(res[1].join(', '));
+      } else {
+        document.getElementById('validation').innerHTML = "Bag and all checksums are <b>valid</b>.";
+      }
       var element = document.getElementById('properties');
       element.innerHTML = '<tr class="hide"><td contenteditable="true">Untitled</td><td contenteditable="true">undefined</td><td><span class="table-remove glyphicon glyphicon-remove"></span></td></tr>';
       var bagDropzone = document.getElementById("bagDropzone");
@@ -88,7 +92,7 @@ function bagLoad(bag) {
       bagname.setAttribute("class", "dz-message");
       bagname.setAttribute("id", "existingBagname");
       bagDropzone.appendChild(bagname);
-      for (let x in res[1]) {
+      for (let x in res[0]) {
         // There's probably a nicer way of templating this
         var row = document.createElement('tr');
         var key = document.createElement('td');
@@ -99,7 +103,7 @@ function bagLoad(bag) {
         var value = document.createElement('td');
         value.setAttribute("contenteditable", "true");
         // This feels way too Pythonic, and bad here
-        var valuevalue = document.createTextNode(res[1][x]);
+        var valuevalue = document.createTextNode(res[0][x]);
         row.appendChild(value);
         value.appendChild(valuevalue);
         var remove = document.createElement('td');
@@ -108,15 +112,16 @@ function bagLoad(bag) {
         row.appendChild(remove);
         remove.appendChild(removespan);
         element.appendChild(row);
-      $('.table-remove').click(function () {
-        $(this).parents('tr').detach();
-      });
+        $('.table-remove').click(function () {
+          $(this).parents('tr').detach();
+        });
       }
     } else {
       notifier.notify({"title" : "ProveIt", "message" : "Bag has failed validation."});
       if (res[1]){
         document.getElementById('validation').innerHTML = "Some files <b>failed</b> to validate: ".concat(res[1].join(', '));
       } else {
+        document.getElementById('validation').innerHTML = "File is not a valid bag at all.";
         bagDropzone.dropzone.removeAllFiles();
       }
     }
@@ -130,7 +135,7 @@ function package() {
     $('tbody').eq(0).find('tr').each((r,row) => rows.push($(row).find('td').map((c,cell) => $(cell).text()).toArray()));
     client.invoke("bag_update", rows, bagpath, JSON.stringify(exportPath[0]), function(error, res, more) {
       if (res === true){
-        notifier.notify({"title" : "ProveIt", "message" : "The bag has been updated on your desktop."});
+        notifier.notify({"title" : "ProveIt", "message" : "The bag has been exported."});
       } else {
         notifier.notify({"title" : "ProveIt", "message" : "Error updating bag."});
       }

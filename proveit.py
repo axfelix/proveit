@@ -6,6 +6,7 @@ from zipfile import ZipFile
 import tempfile
 import zerorpc
 import shutil
+import PyPDF2
 from pathlib import Path
 
 bag_path = None
@@ -24,9 +25,20 @@ class ProveIt(object):
             return False, False
 
         if bag.is_valid():
-            bag_files = []
-            for x in bag.payload_files(): bag_files.append(x)
-            return bag_files, bag.info
+            encrypted_files = []
+            for x in bag.payload_files():
+                if Path(x).suffix == '.pdf':
+                    with open(x, mode='rb') as pdf:
+                        reader = PyPDF2.PdfFileReader(pdf)
+                        if reader.isEncrypted:
+                            encrypted_files.append(x)
+                elif Path(x).suffix == '.zip':
+                    with ZipFille(x) as zippy:
+                        try:
+                            zippy.open(zippy.namelist()[0])
+                        except RuntimeError:
+                            encrypted_files.append(x)
+            return bag.info, encrypted_files
         else:
             bad_files = []
             try:
