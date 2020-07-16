@@ -39,6 +39,7 @@ class ProveIt(object):
                         except RuntimeError:
                             encrypted_files.append(x)
             return bag.info, encrypted_files
+
         else:
             bad_files = []
             try:

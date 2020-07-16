@@ -1,6 +1,6 @@
 {
   "name": "ProveIt",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "homepage": "https://github.com/axfelix/proveit",
   "main": "main.js",
   "description": "An app for validating and adding metadata fields to bags.",
@@ -14,13 +14,13 @@
     "test": "electron . --run-tests"
   },
   "dependencies": {
-    "electron": "2.0.18",
+    "electron": "~9.1.0",
     "electron-squirrel-startup": "^1.0.0",
     "electron-tooltip": "^1.1.5",
     "node-notifier": "^5.4.0",
     "portfinder": "^1.0.20",
     "update-electron-app": "^1.3.0",
-    "zerorpc": "^0.9.8",
+    "zerorpc": "hokiedsp/zerorpc-node#dev_zmq6",
     "dropzone": "^5.7.0"
   },
   "files": [

@@ -74,7 +74,7 @@ function bagLoad(bag) {
   client.invoke("bag_load", bag.path, function(error, res, more) {
     if (res[0]){
       notifier.notify({"title" : "ProveIt", "message" : "Bag and all checksums are valid."});
-      if (res[1]){
+      if (res[1] && res[1].length > 0){
         document.getElementById('validation').innerHTML = "Bag and all checksums are <b>valid</b>. However, some files in the bag may be password protected: ".concat(res[1].join(', '));
       } else {
         document.getElementById('validation').innerHTML = "Bag and all checksums are <b>valid</b>.";
@@ -129,7 +129,7 @@ function bagLoad(bag) {
 }
 
 function package() {
-  exportPath = dialog.showOpenDialog({properties: ["openDirectory"]});
+  exportPath = dialog.showOpenDialogSync({properties: ["openDirectory"]});
   if (exportPath){
     var rows = [];
     $('tbody').eq(0).find('tr').each((r,row) => rows.push($(row).find('td').map((c,cell) => $(cell).text()).toArray()));
