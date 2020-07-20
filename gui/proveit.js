@@ -1,5 +1,4 @@
 const notifier = require("node-notifier");
-const tt = require('electron-tooltip');
 const path = require('path');
 const fs = require('fs');
 const dropzone = require('dropzone');
@@ -8,7 +7,6 @@ const {app} = require('electron').remote;
 const remote = require('electron').remote;
 let client = remote.getGlobal('client');
 let packageFolder = null;
-tt({position: 'right'})
 
 let bagpath = null;
 
@@ -133,6 +131,7 @@ function package() {
   if (exportPath){
     var rows = [];
     $('tbody').eq(0).find('tr').each((r,row) => rows.push($(row).find('td').map((c,cell) => $(cell).text()).toArray()));
+    console.log(rows, bagpath, JSON.stringify(exportPath[0]));
     client.invoke("bag_update", rows, bagpath, JSON.stringify(exportPath[0]), function(error, res, more) {
       if (res === true){
         notifier.notify({"title" : "ProveIt", "message" : "The bag has been exported."});

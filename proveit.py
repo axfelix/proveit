@@ -55,7 +55,7 @@ class ProveIt(object):
             if x != "Untitled":
                 bag.info[x] = y
         bag.save(manifests=True)
-        bag_destination = os.path.join(export_path, Path(bag_path).stem)
+        bag_destination = os.path.join(export_path.strip("\""), Path(bag_path).stem)
         zipname = shutil.make_archive(bag_destination, 'zip', tempdir.name)
         return True
 
