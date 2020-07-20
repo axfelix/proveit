@@ -22,8 +22,6 @@ dropzone.options.bagDropzone = {
 }
 
 var $TABLE = $('#table');
-var $BTN = $('#export-btn');
-var $EXPORT = $('#export');
 
 $('.table-add').click(function () {
   var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
@@ -37,33 +35,6 @@ $('.table-remove').click(function () {
 // A few jQuery helpers for exporting only
 jQuery.fn.pop = [].pop;
 jQuery.fn.shift = [].shift;
-
-$BTN.click(function () {
-  var $rows = $TABLE.find('tr:not(:hidden)');
-  var headers = [];
-  var data = [];
-  
-  // Get the headers (add special header logic here)
-  $($rows.shift()).find('th:not(:empty)').each(function () {
-    headers.push($(this).text().toLowerCase());
-  });
-  
-  // Turn all existing rows into a loopable array
-  $rows.each(function () {
-    var $td = $(this).find('td');
-    var h = {};
-    
-    // Use the headers from earlier to name our hash keys
-    headers.forEach(function (header, i) {
-      h[header] = $td.eq(i).text();   
-    });
-    
-    data.push(h);
-  });
-  
-  // Output the result
-  $EXPORT.text(JSON.stringify(data));
-});
 
 function bagLoad(bag) {
   document.getElementById("plus").style.display = 'inline';
@@ -130,7 +101,7 @@ function package() {
   exportPath = dialog.showOpenDialogSync({properties: ["openDirectory"]});
   if (exportPath){
     var rows = [];
-    $('tbody').eq(0).find('tr').each((r,row) => rows.push($(row).find('td').map((c,cell) => $(cell).text()).toArray()));
+    $('tbody').eq(0).find('tr:not([style*="display: none"])').each((r,row) => rows.push($(row).find('td').map((c,cell) => $(cell).text()).toArray()));
     console.log(rows, bagpath, JSON.stringify(exportPath[0]));
     client.invoke("bag_update", rows, bagpath, JSON.stringify(exportPath[0]), function(error, res, more) {
       if (res === true){
