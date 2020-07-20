@@ -78,7 +78,7 @@ function bagLoad(bag) {
         document.getElementById('validation').innerHTML = "Bag and all checksums are <b>valid</b>.";
       }
       var element = document.getElementById('properties');
-      element.innerHTML = '<tr class="hide"><td contenteditable="true">Untitled</td><td contenteditable="true">undefined</td><td><span class="table-remove glyphicon glyphicon-remove"></span></td></tr>';
+      element.innerHTML = '<tr class="hide"><td contenteditable="true">Untitled</td><td contenteditable="true">undefined</td><td><span class="table-remove fa fa-remove"></span></td></tr>';
       var bagDropzone = document.getElementById("bagDropzone");
       var existingBagname = document.getElementById("existingBagname");
       if (existingBagname) {
@@ -106,7 +106,7 @@ function bagLoad(bag) {
         value.appendChild(valuevalue);
         var remove = document.createElement('td');
         var removespan = document.createElement('span');
-        removespan.setAttribute("class", "table-remove glyphicon glyphicon-remove");
+        removespan.setAttribute("class", "table-remove fa fa-remove");
         row.appendChild(remove);
         remove.appendChild(removespan);
         element.appendChild(row);
