@@ -28,12 +28,12 @@ class ProveIt(object):
             encrypted_files = []
             for x in bag.payload_files():
                 if Path(x).suffix == '.pdf':
-                    with open(x, mode='rb') as pdf:
+                    with open(os.path.join(tempdir.name, x), mode='rb') as pdf:
                         reader = PyPDF2.PdfFileReader(pdf)
                         if reader.isEncrypted:
                             encrypted_files.append(x)
                 elif Path(x).suffix == '.zip':
-                    with ZipFille(x) as zippy:
+                    with ZipFile(os.path.join(tempdir.name, x)) as zippy:
                         try:
                             zippy.open(zippy.namelist()[0])
                         except RuntimeError:

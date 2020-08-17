@@ -1,2 +1,3 @@
 bagit
 zerorpc
+pypdf2
