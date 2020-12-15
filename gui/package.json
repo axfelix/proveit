@@ -1,6 +1,6 @@
 {
   "name": "ProveIt",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/axfelix/proveit",
   "main": "main.js",
   "description": "An app for validating and adding metadata fields to bags.",
@@ -11,7 +11,8 @@
   },
   "scripts": {
     "start": "electron .",
-    "test": "electron . --run-tests"
+    "test": "electron . --run-tests",
+    "notarize": "notarize.js"
   },
   "dependencies": {
     "electron": "~9.1.0",
